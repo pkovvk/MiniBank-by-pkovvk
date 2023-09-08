@@ -7,6 +7,7 @@ public class ClientBase {
     Client client1 = new Client("bob", "12345678", 0);
     Client client2 = new Client("david", "123456789", 100);
     Client client3 = new Client("alice", "1234567890", 120);
+    currentClientCode current = new currentClientCode();
 
     int i;
 
@@ -38,13 +39,17 @@ public class ClientBase {
         return clientPass.get(i).equals(password);
     }
 
-    public void updateBalance(){
-        List<Integer> clientBalance = new LinkedList<>();
-        clientBalance.add(0, client1.getBalance());
-        clientBalance.add(1, client2.getBalance());
-        clientBalance.add(2, client3.getBalance());
+    public void updateBalance() throws IOException {
+        if (current.isCurrentClientEmpty()) {
+            List<Integer> clientBalance = new LinkedList<>();
+            clientBalance.add(0, client1.getBalance());
+            clientBalance.add(1, client2.getBalance());
+            clientBalance.add(2, client3.getBalance());
 
-        Client.currentBalance = clientBalance.get(i);
+            Client.currentBalance = clientBalance.get(i);
+        } else {
+            Client.currentBalance = current.getSavedBalance();
+        }
     }
 
     public void userNotFound() throws IOException {
@@ -81,9 +86,35 @@ public class ClientBase {
         if (answer == 1) {
             auth.toAuthWindow();
         } else if (answer == 2) {
+            Client.currentName = null;
             System.out.println("----------------Регистрация----------------");
             reg.toRegWindow();
         } else if (answer == 3) {
+            Client.currentName = null;
+            Main.getMain();
+        } else {
+            System.out.println("Неправильный пункт...");
+            passIncorrect();
+        }
+    }
+
+    public void userAlreadyUsed() throws IOException {
+        RegistrationWindow reg = new RegistrationWindow();
+        AuthWindow auth = new AuthWindow();
+        Scanner scan = new Scanner(System.in);
+        System.out.println("1: Попробовать еще раз");
+        System.out.println("2: Пройти авторизацию");
+        System.out.println("3: Выйти в меню");
+        System.out.print("Ваш ответ: ");
+        int answer = scan.nextInt();
+        if (answer == 1) {
+            reg.toRegWindow();
+        } else if (answer == 2) {
+            Client.currentName = null;
+            System.out.println("---------------Авторизация----------------");
+            auth.toAuthWindow();
+        } else if (answer == 3) {
+            Client.currentName = null;
             Main.getMain();
         } else {
             System.out.println("Неправильный пункт...");
@@ -136,8 +167,8 @@ public class ClientBase {
             System.out.println("Ошибка! Пароль не должен быть пустым...");
             Client.currentPass = null;
             reg.toRegWindow();
-        } else if (password.length() != 4) {
-            System.out.println("Ошибка! Пароль должен состоять из 4 символов!");
+        } else if (password.length() < 8) {
+            System.out.println("Ошибка! В пароле должно быть минимум 8 символов!");
             Client.currentPass = null;
             reg.toRegWindow();
         }

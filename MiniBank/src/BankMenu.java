@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class BankMenu {
+    currentClientCode current = new currentClientCode();
     public void getBankMenu() throws IOException {
         Listener listener = new Listener();
         Scanner in = new Scanner(System.in);
@@ -30,6 +31,7 @@ public class BankMenu {
         if (answer == 1) {
             getBankMenu();
         } else if (answer == 0) {
+            current.saveClient(Client.currentName, Client.currentPass, Client.currentBalance);
             System.out.println("До свидания!");
             System.exit(1);
         } else {

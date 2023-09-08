@@ -3,9 +3,9 @@ import java.util.Scanner;
 
 public class AuthWindow {
     ClientBase data = new ClientBase();
+    currentClientCode current = new currentClientCode();
 
     public void toAuthWindow() throws IOException {
-        currentClientCode current = new currentClientCode();
         BankMenu bank = new BankMenu();
 
         if (Client.currentName == null) {
@@ -20,6 +20,8 @@ public class AuthWindow {
                 System.out.println("Успешная авторизация!");
                 current.setAuth(true);
                 data.updateBalance();
+                System.out.println(Client.currentBalance);
+                current.saveClient(Client.currentName, Client.currentPass, Client.currentBalance);
                 bank.getBankMenu();
             } else {
                 System.out.println("Ошибка! Пароль введен не правильно...");

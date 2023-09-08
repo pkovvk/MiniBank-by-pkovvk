@@ -5,9 +5,9 @@ public class Listener {
     BankMenu bank = new BankMenu();
     AuthWindow auth = new AuthWindow();
     RegistrationWindow register = new RegistrationWindow();
+    currentClientCode current = new currentClientCode();
 
     public void noreglisten(int answer) throws IOException {
-        currentClientCode current = new currentClientCode();
         if (answer == 1) {
             Scanner scan = new Scanner(System.in);
             System.out.println("---------------Авторизация----------------");
@@ -15,7 +15,7 @@ public class Listener {
                 System.out.println("1: Войти в существующий аккаунт - @" + current.getSavedName());
                 System.out.println("2: Войти в другой аккаунт");
                 System.out.println("3: Выйти в меню");
-                System.out.println("Ваш ответ: ");
+                System.out.print("Ваш ответ: ");
                 int ans = scan.nextInt();
                 if (ans == 1) {
                     Client.currentName = current.getSavedName();
@@ -37,7 +37,6 @@ public class Listener {
             System.out.println("----------------Регистрация----------------");
             register.toRegWindow();
         } else if (answer == 3) {
-            current.saveClient();
             System.out.println("До свидания!");
             System.exit(1);
         } else {
@@ -47,13 +46,12 @@ public class Listener {
     }
 
     public void reglisten(int answer) throws IOException {
-        currentClientCode current = new currentClientCode();
         Client currentclient = new Client(Client.currentName, Client.currentPass, Client.currentBalance);
         Scanner scan = new Scanner(System.in);
 
         if (answer == 1) {
             System.out.println("------------------Баланс-----------------");
-            System.out.println("Ваш баланс: " + currentclient.getBalance() + "$");
+            System.out.println("Ваш баланс: " + current.getSavedBalance() + "$");
             bank.bankOrExit();
         } else if (answer == 2) {
             System.out.println("----------------Пополнение---------------");
@@ -81,12 +79,13 @@ public class Listener {
             System.out.println("Подробнее описать себя вы сможете в новых версиях приложения...");
             bank.bankOrExit();
         } else if (answer == 5) {
+            current.saveClient(Client.currentName, Client.currentPass, Client.currentBalance);
             Client.currentName = null;
             Client.currentPass = null;
             current.setAuth(false);
             Main.getMain();
         } else if (answer == 6) {
-            current.saveClient();
+            current.saveClient(Client.currentName, Client.currentPass, Client.currentBalance);
             System.out.println("До свидания!");
             System.exit(1);
         } else {

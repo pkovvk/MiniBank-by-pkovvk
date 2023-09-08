@@ -6,13 +6,13 @@ public class currentClientCode {
     File currentClientFile = new File("currentClient");
     File isAuthorizedFile = new File("isAuthorized");
 
-    public void saveClient() throws IOException {
+    public void saveClient(String username, String password, int balance) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(currentClientFile));
-        writer.write(Client.currentName);
+        writer.write(username);
         writer.newLine();
-        writer.write(Client.currentPass);
+        writer.write(password);
         writer.newLine();
-        writer.write(Client.currentBalance);
+        writer.write(String.valueOf(balance));
         writer.close();
     }
 

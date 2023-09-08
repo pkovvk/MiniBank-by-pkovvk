@@ -2,11 +2,11 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class RegistrationWindow {
+    currentClientCode current = new currentClientCode();
+    BankMenu bank = new BankMenu();
+    ClientBase data = new ClientBase();
 
     public void toRegWindow() throws IOException {
-        currentClientCode current = new currentClientCode();
-        BankMenu bank = new BankMenu();
-        ClientBase data = new ClientBase();
         Scanner scan = new Scanner(System.in);
 
         if (Client.currentName == null) {
@@ -14,9 +14,7 @@ public class RegistrationWindow {
             Client.currentName = scan.nextLine();
             data.checkRegNameValidation(Client.currentName);
             if (data.checkName(Client.currentName)) {
-                System.out.println("Такой пользователь уже есть! Пожалуйста, выберите другое имя!");
-                Client.currentName = null;
-                toRegWindow();
+                data.userAlreadyUsed();
             }
         }
         if (Client.currentPass == null) {
@@ -26,6 +24,8 @@ public class RegistrationWindow {
         }
         System.out.println("Успешная регистрация!");
         current.setAuth(true);
+        Client.currentBalance = 0;
+        current.saveClient(Client.currentName, Client.currentPass, Client.currentBalance);
         bank.getBankMenu();
     }
 }
