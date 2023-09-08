@@ -1,54 +1,108 @@
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.LinkedList;
+import java.util.List;
 
 public class currentClientCode {
     File currentClientFile = new File("currentClient");
-    BufferedReader reader = null;
+    File isAuthorizedFile = new File("isAuthorized");
 
-    public void writeClient(String username) throws FileNotFoundException {
-        PrintWriter pw = new PrintWriter(currentClientFile);
-
-        pw.println(Client.currentName);
-        pw.println(Client.currentBalance);
-        pw.close();
+    public void saveClient() throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(currentClientFile));
+        writer.write(Client.currentName);
+        writer.newLine();
+        writer.write(Client.currentPass);
+        writer.newLine();
+        writer.write(Client.currentBalance);
+        writer.close();
     }
 
-    public String getName() throws IOException {
-        reader = new BufferedReader(new FileReader("currentClient"));
-        String nameLine = reader.readLine();
+    public void getSavedClient() throws IOException {
+        FileReader fr = new FileReader(currentClientFile);
+        BufferedReader reader = new BufferedReader(fr);
+        List<String> list = new LinkedList<>();
+        int i = 0;
+        String line = reader.readLine();
+        while (line != null) {
+            list.add(i, line);
+            i++;
+            line = reader.readLine();
+        }
         reader.close();
 
-        return nameLine;
+        System.out.println("Никнейм: " + list.get(0));
+        System.out.println("Пароль: " + list.get(1));
+        System.out.println("Баланс: " + list.get(2));
     }
 
-    public int getBalance() throws IOException {
-        reader = new BufferedReader(new FileReader("currentClient"));
-        int balance = 0;
-        String line;
-        int lineNumber = 0;
-        while ((line = reader.readLine()) != null) {
-            lineNumber++;
-            if (lineNumber == 2) {
-                balance = Integer.parseInt(line);
-                break;
-            }
+    public String getSavedName() throws IOException {
+        FileReader fr = new FileReader(currentClientFile);
+        BufferedReader reader = new BufferedReader(fr);
+        List<String> list = new LinkedList<>();
+        int i = 0;
+        String line = reader.readLine();
+        while (line != null) {
+            list.add(i, line);
+            i++;
+            line = reader.readLine();
+        }
         reader.close();
-        }
-        return balance;
+
+        return list.get(0);
     }
 
-    public void deleteClient() throws IOException {
-        String replace = null;
-        String newLine = "";
-
-        try (BufferedReader br = Files.newBufferedReader(Paths.get("currentClient"));) {
-            br.lines()
-                    .skip(1) // пропускаем первую строку (обычно это заголовок)
-                    .forEach(line -> { // заменяем все вхождения строки ‘replacement’ на ‘newLine’
-                        line = line.replaceAll(replace, newLine);
-                        System.out.println(line);
-                    });
+    public String getSavedPass() throws IOException {
+        FileReader fr = new FileReader(currentClientFile);
+        BufferedReader reader = new BufferedReader(fr);
+        List<String> list = new LinkedList<>();
+        int i = 0;
+        String line = reader.readLine();
+        while (line != null) {
+            list.add(i, line);
+            i++;
+            line = reader.readLine();
         }
+        reader.close();
+
+        return list.get(1);
+    }
+
+    public int getSavedBalance() throws IOException {
+        FileReader fr = new FileReader(currentClientFile);
+        BufferedReader reader = new BufferedReader(fr);
+        List<String> list = new LinkedList<>();
+        int i = 0;
+        String line = reader.readLine();
+        while (line != null) {
+            list.add(i, line);
+            i++;
+            line = reader.readLine();
+        }
+        reader.close();
+
+        return Integer.parseInt(list.get(2));
+    }
+
+    public boolean isAuthorized() throws IOException {
+        FileReader fr = new FileReader(isAuthorizedFile);
+        BufferedReader reader = new BufferedReader(fr);
+
+        return Boolean.parseBoolean(reader.readLine());
+    }
+
+    public void deleteSavedClient() throws IOException {
+        String nuller = null;
+        BufferedWriter writer = new BufferedWriter(new FileWriter(currentClientFile));
+        writer.write(nuller);
+        writer.close();
+    }
+
+    public boolean isCurrentClientEmpty() {
+        return currentClientFile.length() == 0;
+    }
+
+    public void setAuth(boolean auth) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(isAuthorizedFile));
+        writer.write(String.valueOf(auth));
+        writer.close();
     }
 }

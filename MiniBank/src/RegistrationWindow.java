@@ -1,8 +1,10 @@
+import java.io.IOException;
 import java.util.Scanner;
 
 public class RegistrationWindow {
 
-    public void toRegWindow() {
+    public void toRegWindow() throws IOException {
+        currentClientCode current = new currentClientCode();
         BankMenu bank = new BankMenu();
         ClientBase data = new ClientBase();
         Scanner scan = new Scanner(System.in);
@@ -23,6 +25,7 @@ public class RegistrationWindow {
             data.checkRegPassValidation(Client.currentPass);
         }
         System.out.println("Успешная регистрация!");
+        current.setAuth(true);
         bank.getBankMenu();
     }
 }

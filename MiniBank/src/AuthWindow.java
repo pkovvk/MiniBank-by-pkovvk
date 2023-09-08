@@ -1,9 +1,11 @@
+import java.io.IOException;
 import java.util.Scanner;
 
 public class AuthWindow {
     ClientBase data = new ClientBase();
 
-    public void toAuthWindow() {
+    public void toAuthWindow() throws IOException {
+        currentClientCode current = new currentClientCode();
         BankMenu bank = new BankMenu();
 
         if (Client.currentName == null) {
@@ -16,6 +18,7 @@ public class AuthWindow {
         if (data.checkName(Client.currentName)) {
             if (data.checkPass(Client.currentPass)) {
                 System.out.println("Успешная авторизация!");
+                current.setAuth(true);
                 data.updateBalance();
                 bank.getBankMenu();
             } else {
@@ -28,7 +31,7 @@ public class AuthWindow {
         }
     }
 
-    public void interName() {
+    public void interName() throws IOException {
         Scanner scan = new Scanner(System.in);
 
         System.out.print("Введите имя: ");
@@ -41,7 +44,7 @@ public class AuthWindow {
         }
     }
 
-    public void interPass() {
+    public void interPass() throws IOException {
         Scanner scan = new Scanner(System.in);
 
         System.out.print("Введите пароль: ");

@@ -1,11 +1,12 @@
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
 public class ClientBase {
-    Client client1 = new Client("bob", "1111", 0);
-    Client client2 = new Client("david", "1234", 100);
-    Client client3 = new Client("alice", "2020", 120);
+    Client client1 = new Client("bob", "12345678", 0);
+    Client client2 = new Client("david", "123456789", 100);
+    Client client3 = new Client("alice", "1234567890", 120);
 
     int i;
 
@@ -46,7 +47,7 @@ public class ClientBase {
         Client.currentBalance = clientBalance.get(i);
     }
 
-    public void userNotFound(){
+    public void userNotFound() throws IOException {
         RegistrationWindow reg = new RegistrationWindow();
         AuthWindow auth = new AuthWindow();
         Scanner scan = new Scanner(System.in);
@@ -68,7 +69,7 @@ public class ClientBase {
         }
     }
 
-    public void passIncorrect() {
+    public void passIncorrect() throws IOException {
         RegistrationWindow reg = new RegistrationWindow();
         AuthWindow auth = new AuthWindow();
         Scanner scan = new Scanner(System.in);
@@ -90,7 +91,7 @@ public class ClientBase {
         }
     }
 
-    public void checkNameValidation(String username) {
+    public void checkNameValidation(String username) throws IOException {
         AuthWindow auth = new AuthWindow();
         if (username.isEmpty()) {
             System.out.println("Ошибка! Вы ввели пустое имя...");
@@ -103,20 +104,20 @@ public class ClientBase {
         }
     }
 
-    public void checkPassValidation(String password) {
+    public void checkPassValidation(String password) throws IOException {
         AuthWindow auth = new AuthWindow();
         if (password.isEmpty()) {
             System.out.println("Ошибка! Пароль не должен быть пустым...");
             Client.currentPass = null;
             auth.toAuthWindow();
-        } else if (password.length() != 4) {
-            System.out.println("Ошибка! Пароль должен состоять из 4 символов!");
+        } else if (password.length() < 8) {
+            System.out.println("Ошибка! В пароле должно быть минимум 8 символов!");
             Client.currentPass = null;
             auth.toAuthWindow();
         }
     }
 
-    public void checkRegNameValidation(String username) {
+    public void checkRegNameValidation(String username) throws IOException {
         RegistrationWindow reg = new RegistrationWindow();
         if (username.isEmpty()) {
             System.out.println("Ошибка! Вы ввели пустое имя...");
@@ -129,7 +130,7 @@ public class ClientBase {
         }
     }
 
-    public void checkRegPassValidation(String password) {
+    public void checkRegPassValidation(String password) throws IOException {
         RegistrationWindow reg = new RegistrationWindow();
         if (password.isEmpty()) {
             System.out.println("Ошибка! Пароль не должен быть пустым...");

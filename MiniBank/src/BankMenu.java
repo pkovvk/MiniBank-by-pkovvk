@@ -1,7 +1,8 @@
+import java.io.IOException;
 import java.util.Scanner;
 
 public class BankMenu {
-    public void getBankMenu() {
+    public void getBankMenu() throws IOException {
         Listener listener = new Listener();
         Scanner in = new Scanner(System.in);
         int answer;
@@ -20,7 +21,7 @@ public class BankMenu {
         listener.reglisten(answer);
     }
 
-    public void bankOrExit() {
+    public void bankOrExit() throws IOException {
         Scanner scan = new Scanner(System.in);
         System.out.println();
         System.out.println("1 - Главное меню // 0 - Закрыть программу");

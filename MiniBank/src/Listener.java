@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Listener {
@@ -5,17 +6,20 @@ public class Listener {
     AuthWindow auth = new AuthWindow();
     RegistrationWindow register = new RegistrationWindow();
 
-    public void noreglisten(int answer) {
+    public void noreglisten(int answer) throws IOException {
+        currentClientCode current = new currentClientCode();
         if (answer == 1) {
             Scanner scan = new Scanner(System.in);
             System.out.println("---------------Авторизация----------------");
-            if (Client.currentName != null) {
-                System.out.println("1: Войти в существующий аккаунт - " + Client.currentName);
+            if (!current.isCurrentClientEmpty()) {
+                System.out.println("1: Войти в существующий аккаунт - @" + current.getSavedName());
                 System.out.println("2: Войти в другой аккаунт");
                 System.out.println("3: Выйти в меню");
                 System.out.println("Ваш ответ: ");
                 int ans = scan.nextInt();
                 if (ans == 1) {
+                    Client.currentName = current.getSavedName();
+                    Client.currentPass = current.getSavedPass();
                     auth.toAuthWindow();
                 } else if (ans == 2) {
                     Client.currentName = null;
@@ -33,6 +37,7 @@ public class Listener {
             System.out.println("----------------Регистрация----------------");
             register.toRegWindow();
         } else if (answer == 3) {
+            current.saveClient();
             System.out.println("До свидания!");
             System.exit(1);
         } else {
@@ -41,7 +46,8 @@ public class Listener {
         }
     }
 
-    public void reglisten(int answer) {
+    public void reglisten(int answer) throws IOException {
+        currentClientCode current = new currentClientCode();
         Client currentclient = new Client(Client.currentName, Client.currentPass, Client.currentBalance);
         Scanner scan = new Scanner(System.in);
 
@@ -75,9 +81,12 @@ public class Listener {
             System.out.println("Подробнее описать себя вы сможете в новых версиях приложения...");
             bank.bankOrExit();
         } else if (answer == 5) {
+            Client.currentName = null;
             Client.currentPass = null;
+            current.setAuth(false);
             Main.getMain();
         } else if (answer == 6) {
+            current.saveClient();
             System.out.println("До свидания!");
             System.exit(1);
         } else {
