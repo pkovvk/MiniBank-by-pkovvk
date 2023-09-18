@@ -3,23 +3,20 @@ import java.util.Scanner;
 
 public class BankMenu {
     currentClientCode current = new currentClientCode();
+    Listener listener = new Listener();
+
     public void getBankMenu() throws IOException {
-        Listener listener = new Listener();
         Scanner in = new Scanner(System.in);
         int answer;
-
         System.out.println("--------------Главное меню---------------");
         System.out.println("Выберите действие: ");
         System.out.println("1: Мой баланс");
         System.out.println("2: Внести средства");
         System.out.println("3: Снять средства");
-        System.out.println("4: Смотреть мои данные");
-        System.out.println("5: Выйти из аккаунта");
-        System.out.println("6: Закрыть приложение");
+        System.out.println("4: Настройки аккаунта");
+        System.out.println("5: Закрыть приложение");
         System.out.println("-----------------------------------------");
-        System.out.print("Ваш ответ: ");
-        answer = in.nextInt();
-        listener.reglisten(answer);
+        listener.reglisten(listener.yourAnswer());
     }
 
     public void bankOrExit() throws IOException {
@@ -31,8 +28,8 @@ public class BankMenu {
         if (answer == 1) {
             getBankMenu();
         } else if (answer == 0) {
-            current.saveClient(Client.currentName, Client.currentPass, Client.currentBalance);
             System.out.println("До свидания!");
+            current.saveClient();
             System.exit(1);
         } else {
             System.out.println("Вы ввели не правильный пункт...");

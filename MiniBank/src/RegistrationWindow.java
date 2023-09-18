@@ -2,19 +2,21 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class RegistrationWindow {
-    currentClientCode current = new currentClientCode();
-    BankMenu bank = new BankMenu();
-    ClientBase data = new ClientBase();
 
     public void toRegWindow() throws IOException {
+        BankMenu bank = new BankMenu();
+        ClientBase data = new ClientBase();
         Scanner scan = new Scanner(System.in);
+        currentClientCode current = new currentClientCode();
 
         if (Client.currentName == null) {
             System.out.print("Введите имя: ");
             Client.currentName = scan.nextLine();
             data.checkRegNameValidation(Client.currentName);
             if (data.checkName(Client.currentName)) {
-                data.userAlreadyUsed();
+                System.out.println("Такой пользователь уже есть! Пожалуйста, выберите другое имя!");
+                Client.currentName = null;
+                toRegWindow();
             }
         }
         if (Client.currentPass == null) {
@@ -23,9 +25,8 @@ public class RegistrationWindow {
             data.checkRegPassValidation(Client.currentPass);
         }
         System.out.println("Успешная регистрация!");
+        data.saveNewClientToBase(Client.currentName, Client.currentPass, Client.currentBalance);
         current.setAuth(true);
-        Client.currentBalance = 0;
-        current.saveClient(Client.currentName, Client.currentPass, Client.currentBalance);
         bank.getBankMenu();
     }
 }

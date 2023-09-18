@@ -1,108 +1,78 @@
 import java.io.*;
-import java.util.LinkedList;
-import java.util.List;
 
 public class currentClientCode {
     File currentClientFile = new File("currentClient");
-    File isAuthorizedFile = new File("isAuthorized");
 
-    public void saveClient(String username, String password, int balance) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(currentClientFile));
-        writer.write(username);
+    public void saveClient() throws IOException {
+        FileWriter fw = new FileWriter(currentClientFile);
+        BufferedWriter writer = new BufferedWriter(fw);
+
+        writer.write(Client.currentName);
         writer.newLine();
-        writer.write(password);
+        writer.write(Client.currentPass);
         writer.newLine();
-        writer.write(String.valueOf(balance));
+        writer.write(String.valueOf(Client.currentBalance));
         writer.close();
     }
 
-    public void getSavedClient() throws IOException {
-        FileReader fr = new FileReader(currentClientFile);
-        BufferedReader reader = new BufferedReader(fr);
-        List<String> list = new LinkedList<>();
-        int i = 0;
-        String line = reader.readLine();
-        while (line != null) {
-            list.add(i, line);
-            i++;
-            line = reader.readLine();
-        }
-        reader.close();
-
-        System.out.println("Никнейм: " + list.get(0));
-        System.out.println("Пароль: " + list.get(1));
-        System.out.println("Баланс: " + list.get(2));
+    public void updateClientFromFile() throws IOException {
+        Client.currentName = getSavedName();
+        Client.currentPass = getSavedPass();
     }
 
     public String getSavedName() throws IOException {
-        FileReader fr = new FileReader(currentClientFile);
-        BufferedReader reader = new BufferedReader(fr);
-        List<String> list = new LinkedList<>();
-        int i = 0;
-        String line = reader.readLine();
-        while (line != null) {
-            list.add(i, line);
-            i++;
-            line = reader.readLine();
-        }
+        BufferedReader reader = new BufferedReader(new FileReader("currentClient"));
+        String result = reader.readLine();
         reader.close();
-
-        return list.get(0);
+        return result;
     }
 
     public String getSavedPass() throws IOException {
-        FileReader fr = new FileReader(currentClientFile);
-        BufferedReader reader = new BufferedReader(fr);
-        List<String> list = new LinkedList<>();
-        int i = 0;
+        BufferedReader reader = new BufferedReader(new FileReader(currentClientFile));
         String line = reader.readLine();
+        String password = null;
+        int lineNumber = 0;
         while (line != null) {
-            list.add(i, line);
-            i++;
+            lineNumber++;
+            if (lineNumber == 2) {
+                password = line;
+            }
             line = reader.readLine();
         }
+
         reader.close();
-
-        return list.get(1);
-    }
-
-    public int getSavedBalance() throws IOException {
-        FileReader fr = new FileReader(currentClientFile);
-        BufferedReader reader = new BufferedReader(fr);
-        List<String> list = new LinkedList<>();
-        int i = 0;
-        String line = reader.readLine();
-        while (line != null) {
-            list.add(i, line);
-            i++;
-            line = reader.readLine();
-        }
-        reader.close();
-
-        return Integer.parseInt(list.get(2));
-    }
-
-    public boolean isAuthorized() throws IOException {
-        FileReader fr = new FileReader(isAuthorizedFile);
-        BufferedReader reader = new BufferedReader(fr);
-
-        return Boolean.parseBoolean(reader.readLine());
+        return password;
     }
 
     public void deleteSavedClient() throws IOException {
+        FileWriter fw = new FileWriter(currentClientFile);
+        BufferedWriter writer = new BufferedWriter(fw);
         String nuller = null;
-        BufferedWriter writer = new BufferedWriter(new FileWriter(currentClientFile));
+
         writer.write(nuller);
         writer.close();
+        fw.close();
     }
 
-    public boolean isCurrentClientEmpty() {
+    public boolean isAuthorized() throws IOException {
+        File file = new File("isAuthorized");
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        String line = reader.readLine();
+        reader.close();
+
+        return Boolean.parseBoolean(line);
+    }
+
+    public boolean isSavedClientEmpty() {
         return currentClientFile.length() == 0;
     }
 
-    public void setAuth(boolean auth) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(isAuthorizedFile));
-        writer.write(String.valueOf(auth));
+    public void setAuth(boolean authorized) throws IOException {
+        FileWriter fw = new FileWriter("isAuthorized");
+        BufferedWriter writer = new BufferedWriter(fw);
+
+        writer.write(String.valueOf(authorized));
         writer.close();
+        fw.close();
     }
 }
