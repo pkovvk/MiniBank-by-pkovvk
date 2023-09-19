@@ -23,7 +23,6 @@ public class AuthWindow {
                 System.out.println("Успешная авторизация!");
                 current.setAuth(true);
                 data.updateBalance();
-                System.out.println(Client.currentBalance);
                 current.saveClient();
                 bank.getBankMenu();
             } else {

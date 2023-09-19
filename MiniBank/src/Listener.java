@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Listener {
-    BankMenu bank = new BankMenu();
+    static BankMenu bank = new BankMenu();
     AuthWindow auth = new AuthWindow();
     RegistrationWindow register = new RegistrationWindow();
     currentClientCode current = new currentClientCode();

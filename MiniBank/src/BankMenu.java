@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class BankMenu {
     currentClientCode current = new currentClientCode();
-    Listener listener = new Listener();
+    static Listener listener = new Listener();
 
     public void getBankMenu() throws IOException {
         Scanner in = new Scanner(System.in);

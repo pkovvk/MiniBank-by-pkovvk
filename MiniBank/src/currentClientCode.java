@@ -1,7 +1,7 @@
 import java.io.*;
 
 public class currentClientCode {
-    File currentClientFile = new File("currentClient");
+    static File currentClientFile = new File("currentClient");
 
     public void saveClient() throws IOException {
         FileWriter fw = new FileWriter(currentClientFile);

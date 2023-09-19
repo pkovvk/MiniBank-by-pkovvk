@@ -268,7 +268,7 @@ public class ClientBase {
 
         System.out.print("Введите имя: ");
         Client.currentName = scan.nextLine();
-        if (!checkNameValidation(Client.currentPass)) {
+        if (!checkNameValidation(Client.currentName)) {
             interName();
         }
         if (!checkName(Client.currentName)) {
